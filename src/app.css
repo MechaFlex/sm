@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Delta";
+  src: url("/Delta.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Bitter";
+  src: url("/Bitter-VariableFont_wght.ttf") format("truetype");
+}
+
+/* Defaults */
+@layer base {
+  body {
+    @apply bg-slate-50 font-main text-slate-800;
+  }
+  button,
+  [type="button"],
+  [type="reset"],
+  [type="submit"] {
+    @apply rounded-full bg-sky-800 px-4 py-2 text-slate-50 drop-shadow-md transition-colors hover:bg-sky-700 active:bg-sky-600 h-10;
+  }
+  input,
+  [type="text"],
+  [type="email"],
+  [type="password"] {
+    @apply rounded-full border border-slate-500 bg-slate-50 px-4 py-2 text-slate-800 drop-shadow-md focus:outline-none;
+  }
+}

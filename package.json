@@ -1,0 +1,45 @@
+{
+  "name": "sm-bun2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "conc \"vite dev --host\" \"bun --watch run ./server\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --plugin-search-dir . --check .",
+    "format": "prettier --plugin-search-dir . --write .",
+    "schema": "bun run ./src/server/schema",
+    "push": "bun x drizzle-kit push:sqlite"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^2.0.0",
+    "@sveltejs/kit": "^1.20.4",
+    "autoprefixer": "^10.4.16",
+    "bun-types": "^1.0.5-canary.20231006T140143",
+    "concurrently": "^8.2.1",
+    "drizzle-kit": "^0.20.4",
+    "postcss": "^8.4.31",
+    "prettier": "^2.8.0",
+    "prettier-plugin-svelte": "^2.10.1",
+    "svelte": "^4.0.5",
+    "svelte-check": "^3.4.3",
+    "tailwindcss": "^3.3.5",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^4.4.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "@elysiajs/cookie": "latest",
+    "@elysiajs/eden": "latest",
+    "@elysiajs/html": "latest",
+    "@elysiajs/jwt": "latest",
+    "@elysiajs/stream": "latest",
+    "@libsql/client": "^0.4.0-pre.1",
+    "dayjs": "^1.11.10",
+    "drizzle-orm": "^0.29.0",
+    "elysia": "0.7.21"
+  }
+}
