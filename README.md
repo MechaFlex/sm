@@ -1,4 +1,14 @@
 # SM
+SM is an all-encompassing solution for student division meetings.
+Made with Teknologsektionen Informationsteknik in mind.
+
+## Tech stack
+This project uses the following:
+- Svelte
+- Bun
+- Elysia (cool bun framework with end-to-end typesafety!)
+- Drizzle along with SQLite/libSQL
+- Tailwind
 
 ## Known issues
 
