@@ -5,15 +5,15 @@ export const handle: Handle = async ({ event, resolve }) => {
   const req: Request = event.request
   const url = new URL(req.url)
 
-  return resolve(event)
+  console.log("request url", url.pathname)
 
   if (url.pathname.startsWith("/api")) {
-    console.log("was api request, bypass auth")
+    console.log("was api request, bypass redirect")
     return resolve(event)
   }
 
   type MaybeUserPromise = ReturnType<typeof eden.attendee.me.get>
-  const isAuthedResponse = await event.fetch("/api/user/me")
+  const isAuthedResponse = await event.fetch("/api/attendee/me")
   const isAuthedDataPromise: MaybeUserPromise = isAuthedResponse.json()
   const isAuthed = await isAuthedDataPromise
 

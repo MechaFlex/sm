@@ -1,16 +1,25 @@
 import { Elysia, t } from "elysia"
 import { db, schema } from "./drizzle/db"
-import { desc, lt } from "drizzle-orm"
+import { desc, eq, lt, gt } from "drizzle-orm"
 
 export const meeting = new Elysia({
   prefix: "/meeting",
 })
-  .get("/", async () => {
-    return "check!"
-  })
   .get("/current", async ({ set }) => {
-    set.status = "OK"
-    return "Current Meeting"
+    const currentMeeting = await db.query.meetings.findFirst({
+      where: lt(schema.meetings.startDate, new Date()),
+      orderBy: [desc(schema.meetings.startDate)],
+    })
+
+    return currentMeeting
+  })
+  .get("/upcoming", async ({ set }) => {
+    const upcomingMeetings = await db.query.meetings.findMany({
+      where: gt(schema.meetings.startDate, new Date()),
+      orderBy: [desc(schema.meetings.startDate)],
+    })
+
+    return upcomingMeetings
   })
   .post(
     "/new",
@@ -25,7 +34,6 @@ export const meeting = new Elysia({
         .returning()
         .get()
 
-      set.status = "OK"
       return "Meeting " + newMeeting.id + " created"
     },
     {
@@ -41,17 +49,35 @@ export const meeting = new Elysia({
       orderBy: [desc(schema.meetings.startDate)],
     })
   })
-  .get("/agenda", async ({ set }) => {
+  .get("/:meetingId", async ({ params: { meetingId }, set }) => {
     const meeting = db.query.meetings.findFirst({
-      where: lt(schema.meetings.startDate, new Date()),
-      orderBy: [desc(schema.meetings.startDate)],
+      where: eq(schema.meetings.id, meetingId),
       with: {
+        meetingsAgendaItems: {
+          columns: {
+            orderInMeeting: true,
+          },
+          with: {
+            agendaItem: true,
+          },
+        },
         meetingsAgendaGroups: {
           columns: {
             orderInMeeting: true,
           },
           with: {
-            agendaGroup: true,
+            agendaGroup: {
+              with: {
+                agendaGroupsAgendaItems: {
+                  columns: {
+                    orderInGroup: true,
+                  },
+                  with: {
+                    agendaItem: true,
+                  },
+                },
+              },
+            },
           },
         },
       },

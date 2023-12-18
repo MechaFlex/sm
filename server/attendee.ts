@@ -2,9 +2,9 @@ import { Elysia, t } from "elysia"
 import { cookie } from "@elysiajs/cookie"
 import { attendeeJWTplugin } from "./attendeeJWT"
 
-import { db } from "./drizzle/db"
+import { db, schema } from "./drizzle/db"
 import { attendees } from "./drizzle/schema/attendee"
-import { eq, and, isNotNull } from "drizzle-orm"
+import { eq, and, isNotNull, lt, desc } from "drizzle-orm"
 
 export async function getMemberCount() {
   const members = await db.query.attendees.findMany({
@@ -21,13 +21,24 @@ export const attendee = new Elysia({
   .post(
     "/register",
     async ({ body, set, attendeeToken, setCookie }) => {
+      //There is some code duplication here, but I'm not sure how to reuse internal routes
+      const currentMeeting = await db.query.meetings.findFirst({
+        where: lt(schema.meetings.startDate, new Date()),
+        orderBy: [desc(schema.meetings.startDate)],
+      })
+
+      if (!currentMeeting) {
+        set.status = "Not Found"
+        return "No current meeting"
+      }
+
       const attendee = await db
         .insert(attendees)
         .values({
           firstName: body.firstName,
           nickName: body.nickName,
           lastName: body.lastName,
-          meetingId: "1",
+          meetingId: currentMeeting.id,
         })
         .returning()
         .get()

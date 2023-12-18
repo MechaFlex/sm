@@ -1,6 +1,4 @@
 <script>
-  import { writable } from "svelte/store"
-  import Icon from "$lib/components/icon.svelte"
   import dayjs from "dayjs"
   import "dayjs/locale/sv"
   import advancedFormat from "dayjs/plugin/advancedFormat"
@@ -16,8 +14,6 @@
   //dayjs.locale("sv")
   dayjs.extend(advancedFormat)
   const nextMeetingDate = dayjs("2023-10-06T17:30:00")
-
-  let stage = 0
 </script>
 
 <main class="flex h-screen flex-col items-center gap-12 p-6 text-center">
@@ -42,6 +38,6 @@
       <Stage2 />
     </div>
   {:else}
-    <div>el else</div>
+    <div>Something went wrong in the joining process</div>
   {/if}
 </main>
