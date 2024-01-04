@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia"
 import { db, schema } from "./drizzle/db"
-import { desc, eq, lt, gt } from "drizzle-orm"
+import { desc, eq, lt, gt, sql } from "drizzle-orm"
 
 export const meeting = new Elysia({
   prefix: "/meeting",
@@ -84,3 +84,39 @@ export const meeting = new Elysia({
     })
     return meeting
   })
+
+const getAgenda = db.query.meetings
+  .findFirst({
+    where: eq(schema.meetings.id, sql.placeholder("meetingId")),
+    with: {
+      meetingsAgendaItems: {
+        columns: {
+          orderInMeeting: true,
+        },
+        with: {
+          agendaItem: true,
+        },
+      },
+      meetingsAgendaGroups: {
+        columns: {
+          orderInMeeting: true,
+        },
+        with: {
+          agendaGroup: {
+            with: {
+              agendaGroupsAgendaItems: {
+                columns: {
+                  orderInGroup: true,
+                },
+                with: {
+                  agendaItem: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  .prepare()
+export type Agenda = ReturnType<typeof getAgenda.execute>

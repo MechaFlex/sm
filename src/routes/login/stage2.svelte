@@ -27,19 +27,12 @@
   </div>
   <button
     type="submit"
-    on:click={async () => {
-      const currentMeeting = (await eden.meeting.current.get()).data
-
-      if (!currentMeeting) {
-        console.error("No current meeting")
-      }
-
+    on:click={() => {
       eden.attendee.register
         .post({
           firstName: $names.firstName,
           nickName: $names.nickName,
           lastName: $names.lastName,
-          
         })
         .then(() => {
           location.pathname = "/agenda"

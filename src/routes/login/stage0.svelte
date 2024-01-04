@@ -4,22 +4,16 @@
   import { fade } from "svelte/transition"
   import { joinStage, names } from "./joinStore"
   import { eden } from "$lib"
-  import { onMount } from "svelte"
 
-  let currentMeeting: any
-  let upcomingMeetings: any
-
-  /*onMount(() => {
-    currentMeeting = eden.meeting.current.get()
-    upcomingMeetings = eden.meeting.upcoming.get()
-  })*/
+  const currentMeeting = () => eden.meeting.current.get()
+  const upcomingMeetings = () => eden.meeting.upcoming.get()
 
   let name = ""
   let formError = ""
 </script>
 
 <div class="flex flex-col items-center gap-6">
-  {#await currentMeeting then currentMeeting}
+  {#await currentMeeting() then currentMeeting}
     {#if currentMeeting.data}
       <p>{currentMeeting.data.name} is currently in session</p>
 

@@ -1,5 +1,4 @@
 import type { Handle } from "@sveltejs/kit"
-import type { eden } from "./lib"
 
 export const handle: Handle = async ({ event, resolve }) => {
   const req: Request = event.request
@@ -12,12 +11,11 @@ export const handle: Handle = async ({ event, resolve }) => {
     return resolve(event)
   }
 
-  type MaybeUserPromise = ReturnType<typeof eden.attendee.me.get>
-  const isAuthedResponse = await event.fetch("/api/attendee/me")
-  const isAuthedDataPromise: MaybeUserPromise = isAuthedResponse.json()
-  const isAuthed = await isAuthedDataPromise
+  const authResponse = await event.fetch("/api/attendee/me")
+  const authJson = await authResponse.json()
+  console.log("isAuthed", authJson)
 
-  if (isAuthed.data) {
+  if (authJson) {
     console.log("attendee is authenticated")
     return resolve(event)
   }
