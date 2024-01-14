@@ -23,6 +23,8 @@ export const attendees = sqliteTable("attendees", {
     .references(() => meetings.id),
 })
 
+export const Attendee = attendees.$inferSelect
+
 //export const attendeesInsertSchema = createInsertSchema(attendees) //insert schema does not seem to work with drizzle currently?
 /*export const otherType = t.Object({
   firstName: t.String(),

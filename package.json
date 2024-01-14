@@ -36,11 +36,11 @@
     "@elysiajs/cookie": "latest",
     "@elysiajs/eden": "latest",
     "@elysiajs/html": "latest",
-    "@elysiajs/jwt": "latest",
+    "@elysiajs/jwt": "^0.8.0",
     "@elysiajs/stream": "latest",
     "@libsql/client": "^0.4.0-pre.1",
     "dayjs": "^1.11.10",
     "drizzle-orm": "^0.29.0",
-    "elysia": "0.7.21"
+    "elysia": "^0.8.9"
   }
 }

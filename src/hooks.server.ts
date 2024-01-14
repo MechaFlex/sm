@@ -11,7 +11,12 @@ export const handle: Handle = async ({ event, resolve }) => {
     return resolve(event)
   }
 
-  const authResponse = await event.fetch("/api/attendee/me")
+  const authHeader = new Headers()
+  authHeader.append("Cookie", event.request.headers.toJSON().cookie)
+  const authResponse = await event.fetch("/api/attendee/me", {
+    // headers: [["Cookie", event.request.headers.toJSON().cookie]],
+    headers: [["testheader", "teststring"]],
+  })
   const authJson = await authResponse.json()
   console.log("isAuthed", authJson)
 

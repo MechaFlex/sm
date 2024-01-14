@@ -18,3 +18,8 @@ This project uses the following:
 ## TODO
 
 - Implement leave function, attendee should unregistered when leaving the website.
+
+## I'm stuck
+Updated elysia and everything broke. 
+Also can't pass headers from the SvelteKit hooks for some reason.
+Will try switching to Hono or someting.

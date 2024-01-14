@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia"
 import { cookie } from "@elysiajs/cookie"
+import { jwt } from "@elysiajs/jwt"
 import { attendeeJWTplugin } from "./attendeeJWT"
 
 import { db, schema } from "./drizzle/db"
@@ -16,8 +17,21 @@ export async function getMemberCount() {
 export const attendee = new Elysia({
   prefix: "/attendee",
 })
-  .use(attendeeJWTplugin)
-  .use(cookie())
+  //.use(attendeeJWTplugin)
+  /*.use(
+    jwt({
+      name: "attendeeToken",
+      secret: "salt",
+      exp: "1d",
+      /*schema: t.Object({
+      id: t.String(),
+      firstName: t.String(),
+      nickName: t.String(),
+      lastName: t.String(),
+    }),
+    })
+  )*/
+  //.use(cookie())
   .post(
     "/register",
     async ({ body, set, attendeeToken, setCookie }) => {
@@ -76,8 +90,10 @@ export const attendee = new Elysia({
       return "JWT invalid, but cookie still deleted"
     }
   })
-  .get("/me", async ({ attendeeToken, cookie: { attendeeJWT } }) => {
-    return await attendeeToken.verify(attendeeJWT)
+  .get("/me", async (set /*{ attendeeToken, cookie: { attendeeJWT } }*/) => {
+    console.log(set)
+    console.log(set.cookie.attendeeJWT)
+    return await set.attendeeToken.verify(set.cookie.attendeeJWT)
   })
   .get("/all", async () => {
     return await db.query.attendees.findMany()

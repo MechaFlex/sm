@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia"
 import Stream from "@elysiajs/stream"
 import { SpeakersList } from "./classes/SpeakersList"
-import type { Attendee } from "./drizzle/schema/attendee"
+import { Attendee } from "./drizzle/schema/attendee"
 import { attendeeJWTplugin } from "./attendeeJWT"
 import cookie from "@elysiajs/cookie"
 import { db } from "./drizzle/db"
@@ -9,8 +9,8 @@ import { attendees } from "./drizzle/schema/attendee"
 import { eq } from "drizzle-orm"
 
 export type SpeakersListStreamInterface = {
-  new: Attendee[]
-  returning: Attendee[]
+  new: (typeof Attendee)[]
+  returning: (typeof Attendee)[]
 }
 
 const speakersList = new SpeakersList()

@@ -8,11 +8,11 @@ export const attendeeJWTplugin = new Elysia().use(
     name: "attendeeToken",
     secret: salt,
     exp: "1d",
-    schema: t.Object({
+    /*schema: t.Object({
       id: t.String(),
       firstName: t.String(),
       nickName: t.String(),
       lastName: t.String(),
-    }),
+    }),*/
   })
 )
